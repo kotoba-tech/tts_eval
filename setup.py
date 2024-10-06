@@ -27,10 +27,17 @@ setup(
     include_package_data=True,
     test_suite='tests',
     install_requires=[
+        "torch",
+        "numpy",
         "datasets",
         "transformers",
         "protobuf",
         "accelerate",
+        "evaluate",
+        "librosa",
+        "soundfile",
+        "jiwer",
+        "pyannote.audio"
     ],
     python_requires='>=3.8',
     entry_points={
