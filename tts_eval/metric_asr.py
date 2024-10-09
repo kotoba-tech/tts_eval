@@ -19,7 +19,7 @@ class ASRMetric:
                  device: Optional[torch.device] = None,
                  attn_implementation: str = "sdpa",
                  device_map: str = "auto",
-                 metrics: Union[str, List[str]] = "wer"):
+                 metrics: Union[str, List[str]] = "cer"):
         logging.info("setup pipeline")
         self.pipe = pipeline(
             "automatic-speech-recognition",
