@@ -19,7 +19,7 @@ class CLAPEmbedding:
                  attn_implementation: Optional[str] = None):
         model_config = {"torch_dtype": torch_dtype}
         if attn_implementation:
-            model_config["model_kwargs"] = {"attn_implementation": attn_implementation}
+            model_config["attn_implementation"] = attn_implementation
         if device_map:
             self.model = ClapModel.from_pretrained(ckpt, device_map=device_map, **model_config)
             self.device = self.model.device

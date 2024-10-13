@@ -21,7 +21,7 @@ class W2VBERTEmbedding:
         self.processor = AutoFeatureExtractor.from_pretrained(ckpt)
         model_config = {"torch_dtype": torch_dtype}
         if attn_implementation:
-            model_config["model_kwargs"] = {"attn_implementation": attn_implementation}
+            model_config["attn_implementation"] = attn_implementation
         if device_map:
             self.model = AutoModel.from_pretrained(ckpt, device_map=device_map, **model_config)
             self.device = self.model.device

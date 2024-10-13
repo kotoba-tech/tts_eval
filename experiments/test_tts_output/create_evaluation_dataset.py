@@ -40,10 +40,15 @@ for s in subsets:
     text.append(_text)
 new_dataset = concatenate_datasets(dataset_list)
 new_text_transcript = list(chain(*text_transcript))
+new_dataset = new_dataset.add_column("transcript", new_text_transcript)
 new_dataset = new_dataset.add_column("text", new_text_transcript)
 new_text = list(chain(*text))
 seed(42)
 shuffle(new_text)
-new_additional_text = [[i] + new_text[n * 4: (n+1) * 4] for n, i in enumerate(new_text_transcript)]
-new_dataset = new_dataset.add_column("text_list", new_additional_text)
-DatasetDict({"test": new_dataset}).push_to_hub("kotoba-speech/tts_evaluation_v1")
+dataset_list = [new_dataset]
+for s in range(0, len(new_text), len(new_text_transcript)):
+    new_dataset = new_dataset.remove_columns("text")
+    new_dataset = new_dataset.add_column("text", new_text[s: s + len(new_text_transcript)])
+    dataset_list.append(new_dataset)
+new_dataset = concatenate_datasets(dataset_list)
+DatasetDict({"test": new_dataset}).push_to_hub("kotoba-speech/tts_evaluation_v1", private=True)
