@@ -25,9 +25,9 @@ class SpeakerEmbeddingSimilarity:
     def __init__(self,
                  model_id: str = "pyannote",
                  device: Optional[Union[str, torch.device]] = None,
-                 device_map: Optional[str] = "auto",
-                 torch_dtype: Optional[torch.dtype] = torch.bfloat16,
-                 attn_implementation: Optional[str] = "sdpa"):
+                 device_map: Optional[str] = None,
+                 torch_dtype: Optional[torch.dtype] = None,
+                 attn_implementation: Optional[str] = None):
         logging.info("setup pipeline")
         self.model = speaker_embeddings[model_id](
             device=device,

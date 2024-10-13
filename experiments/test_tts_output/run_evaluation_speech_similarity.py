@@ -1,3 +1,4 @@
+import torch
 from tqdm import tqdm
 
 from datasets import load_dataset, concatenate_datasets, DatasetDict
@@ -12,7 +13,11 @@ dataset_id = "kotoba-speech/tts_evaluation_v1_with_audio"
 speech_models = ["xlsr_2b"]
 for speech_model in speech_models:
     dataset = load_dataset(dataset_id, split="test")
-    pipe = SpeakerEmbeddingSimilarity(model_id=speech_model)
+    pipe = SpeakerEmbeddingSimilarity(
+        model_id=speech_model,
+        device="cuda" if torch.cuda.is_available() else "cpu",
+        attn_implementation="sdpa"
+    )
     outputs = []
     print(speech_model)
     for example in tqdm(dataset):
