@@ -1,7 +1,7 @@
 from tqdm import tqdm
 
-from datasets import load_dataset, concatenate_datasets, DatasetDict
-from tts_eval import ASRMetric, SpeakerEmbeddingSimilarity
+from datasets import load_dataset
+from tts_eval import ASRMetric
 
 columns_generated_speech = ['generated_audio_1', 'generated_audio_2', 'generated_audio_3', 'generated_audio_4']
 column_text = "text"

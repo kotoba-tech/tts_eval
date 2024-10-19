@@ -1,25 +1,28 @@
 import torch
 from tqdm import tqdm
 
-from datasets import load_dataset, concatenate_datasets, DatasetDict
-from tts_eval import ASRMetric, SpeakerEmbeddingSimilarity
+from datasets import load_dataset
+from tts_eval import SpeakerEmbeddingSimilarity
 
 columns_generated_speech = ['generated_audio_1', 'generated_audio_2', 'generated_audio_3', 'generated_audio_4']
 column_audio = "audio"
 column_text = "text"
 dataset_id = "kotoba-speech/tts_evaluation_v1_with_audio"
-# speech_models = ["pyannote", "metavoice", "hubert_xl", "xlsr_2b"]
-# speech_models = ["hubert_xl", "xlsr_2b"]
-speech_models = ["xlsr_2b"]
+speech_models = [
+    "pyannote",
+    "metavoice",
+    "xlsr_2b",
+    "hubert_xl",
+    "w2v_bert"
+]
 for speech_model in speech_models:
     dataset = load_dataset(dataset_id, split="test")
     pipe = SpeakerEmbeddingSimilarity(
         model_id=speech_model,
         device="cuda" if torch.cuda.is_available() else "cpu",
-        attn_implementation="sdpa"
+        attn_implementation="sdpa" if speech_model != "w2v_bert" else None
     )
     outputs = []
-    print(speech_model)
     for example in tqdm(dataset):
         outputs.append(pipe(
             audio_reference=example[column_audio]["array"],
